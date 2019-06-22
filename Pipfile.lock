@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "293eb00e7386437d6806074eea6b48e2c6041d4c5a870cb9cfefd3d1e3c600ac"
+            "sha256": "35ff431b26796a507402792c3f4699d515063c54307c8ca7ce373bac09701169"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -276,6 +276,14 @@
             "index": "pypi",
             "version": "==1.5.0"
         },
+        "django-celery-email": {
+            "hashes": [
+                "sha256:02694114f8a4e4b363cfae48b960473396899cae08351e29b0c5e431d647ef9e",
+                "sha256:83ad3d4edfccbcdeb8319314ed8c36cf2d017bbb02cae8b459bf6678a804ea44"
+            ],
+            "index": "pypi",
+            "version": "==2.0.2"
+        },
         "django-compressor": {
             "hashes": [
                 "sha256:47c86347f75c64954a06afbbfc820a750619e10c23a49272b865020a407b7edd",
@@ -538,6 +546,13 @@
             ],
             "markers": "python_version > '2.7'",
             "version": "==7.0.0"
+        },
+        "msgpack-python": {
+            "hashes": [
+                "sha256:378cc8a6d3545b532dfd149da715abae4fda2a3adb6d74e525d0d5e51f46909b"
+            ],
+            "index": "pypi",
+            "version": "==0.5.6"
         },
         "mypy": {
             "hashes": [
@@ -884,6 +899,14 @@
                 "sha256:9f3bcd3c401c3e862ec0ebe6d2c069ebc012ce142cce209c098ccb5b09136e89"
             ],
             "version": "==1.2.1"
+        },
+        "sorl-thumbnail": {
+            "hashes": [
+                "sha256:8dfe5fda91a5047d1d35a0b9effe7b000764a01d648e15ca076f44e9c34b6dbd",
+                "sha256:d9e3f018d19293824803e4ffead96b19dfcd44fa7987cea392f50436817bef34"
+            ],
+            "index": "pypi",
+            "version": "==12.5.0"
         },
         "sphinx": {
             "hashes": [
