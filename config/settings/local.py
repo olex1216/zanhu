@@ -11,7 +11,7 @@ SECRET_KEY = env(
     default="0RTBJj4pJGSPl155JvRm4zbGGErAh57jz44N9kmsuvmbUZ4N9oVyTvqPX0zjQZ8W",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = [*]
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -28,16 +28,16 @@ CACHES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG  # noqa F405
 
-# EMAIL
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = env(
-    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-)
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-host
-EMAIL_HOST = "localhost"
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-port
-EMAIL_PORT = 1025
+# # EMAIL
+# # ------------------------------------------------------------------------------
+# # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+# EMAIL_BACKEND = env(
+#     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
+# )
+# # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
+# EMAIL_HOST = "localhost"
+# # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
+# EMAIL_PORT = 1025
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
