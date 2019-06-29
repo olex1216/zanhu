@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
 # __author__ = '__Olex__'
+
+
 from __future__ import unicode_literals
 
 from django.utils.encoding import python_2_unicode_compatible
@@ -28,6 +30,10 @@ class User(AbstractUser):
     class Meta:
         verbose_name = '用户'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.username
+
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
