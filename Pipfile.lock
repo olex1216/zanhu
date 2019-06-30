@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3b5237da413b017fcb37b3ebf7bff134c87f303e366428b8c0ee04f554e77243"
+            "sha256": "ccfd250ad304a53f1d82df1e48de067bc5c95a4103d9e371136b911343f6c837"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -292,6 +292,14 @@
             "index": "pypi",
             "version": "==2.3"
         },
+        "django-contrib-comments": {
+            "hashes": [
+                "sha256:61b051d7bc3ff593e86b41a1ed5e969423cf55cc92768598af3315e2528e0890",
+                "sha256:656aefe59798e5f7ef06af4bf34cf458962225bce93ca62630ba7dd97df9d81a"
+            ],
+            "index": "pypi",
+            "version": "==1.9.1"
+        },
         "django-coverage-plugin": {
             "hashes": [
                 "sha256:8810678115ea541f85f4fdfa248e2bf703f05ac6740f6dbd9860d11a9861672f"
@@ -331,6 +339,14 @@
             "index": "pypi",
             "version": "==2.1.9"
         },
+        "django-markdownx": {
+            "hashes": [
+                "sha256:285a40ab405830c0a049e05f3dafabb2c195146f577b824913555aa62512b90d",
+                "sha256:d6e706c0b1329b23d6dcaa8754e5921fa2531711dc5afeec4ed3c73a8cb6a178"
+            ],
+            "index": "pypi",
+            "version": "==2.0.28"
+        },
         "django-model-utils": {
             "hashes": [
                 "sha256:2c057f3bf0859aba27f04389f0cedd2d48f8c9b3848acb86fd9970794e58f477",
@@ -346,6 +362,14 @@
             ],
             "index": "pypi",
             "version": "==4.10.0"
+        },
+        "django-taggit": {
+            "hashes": [
+                "sha256:01bf163f66f385de3777378f43338aba93aae8673891d8ba9a20695b2ffb8e10",
+                "sha256:c13dfc1808a3084b64898e591af1d2f49b672d108388654804b170ee0ac5caf0"
+            ],
+            "index": "pypi",
+            "version": "==1.1.0"
         },
         "django-test-plus": {
             "hashes": [
@@ -505,6 +529,13 @@
                 "sha256:e408f1eacc0a68fed0c08da45f31d0ebb38079f043328dce69ff133b95c29dc1"
             ],
             "version": "==1.4.1"
+        },
+        "markdown": {
+            "hashes": [
+                "sha256:2e50876bcdd74517e7b71f3e7a76102050edec255b3983403f1a63e7c8a41e7a",
+                "sha256:56a46ac655704b91e5b7e6326ce43d5ef72411376588afa1dd90e881b83c7e8c"
+            ],
+            "version": "==3.1.1"
         },
         "markupsafe": {
             "hashes": [

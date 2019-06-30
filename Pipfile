@@ -45,6 +45,9 @@ sorl-thumbnail = "==12.5.0"
 django-celery-email = "==2.0.2"
 msgpack-python = "==0.5.6"
 django-test-plus = "*"
+django-taggit = "*"
+django-markdownx = "*"
+django-contrib-comments = "*"
 
 [requires]
 python_version = "3.7"

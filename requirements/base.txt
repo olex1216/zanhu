@@ -10,6 +10,8 @@ mysqlclient==1.4.2.post1
 sorl-thumbnail==12.5.0
 django-celery-email==2.0.2
 msgpack-python=0.5.6
+python-slugify = 3.0.2
+
 
 # Django
 # ------------------------------------------------------------------------------
@@ -20,7 +22,10 @@ django-allauth==0.39.1  # https://github.com/pennersr/django-allauth
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-compressor==2.3  # https://github.com/django-compressor/django-compressor
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
-django-test-plus =1.2.1
+django-test-plus==1.2.1
+django-taggit== 1.1.0
+django-contrib-comments==1.9.1
+
 
 # Django REST Framework
 djangorestframework==3.9.4  # https://github.com/encode/django-rest-framework

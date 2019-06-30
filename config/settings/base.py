@@ -65,6 +65,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",  # Handy template tags
     # "django.contrib.admin",
+    'django.forms',  # 放在此列表的最后！用户后面重写django内置widget的模板
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -76,15 +77,21 @@ THIRD_PARTY_APPS = [
     'djcelery_email',
     'sorl.thumbnail',
     'allauth.socialaccount.providers.github',
+    'markdownx',
+    'taggit',
+    "django_comments",
 ]
 
 LOCAL_APPS = [
     "zanhu.users.apps.UsersConfig",
     'zanhu.news.apps.NewsConfig',
+    'zanhu.articles.apps.ArticlesConfig',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------

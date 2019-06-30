@@ -8,12 +8,11 @@ from zanhu.news.views import NewsListView
 
 urlpatterns = [
 
-
                   path('', NewsListView.as_view(), name='home'),
-                  path(
-                      "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
-                  ),
 
+                  # 第三方应用
+                  path('markdownx/', include('markdownx.urls')),
+                  path('comments/', include('django_comments.urls')),
 
                   # Django Admin, use {% url 'admin:index' %}
                   # path(settings.ADMIN_URL, admin.site.urls),
@@ -21,9 +20,9 @@ urlpatterns = [
                   path("users/", include("zanhu.users.urls", namespace="users")),
                   path("accounts/", include("allauth.urls")),
 
-
                   # Your stuff: custom urls includes go here
                   path('news/', include('zanhu.news.urls', namespace='news')),
+                  path('articles/', include('zanhu.articles.urls', namespace='articles')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
