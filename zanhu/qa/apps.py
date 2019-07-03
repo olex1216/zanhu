@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ArticlesConfig(AppConfig):
-    name = 'zanhu.articles'
-    verbose_name = '文章'
+class QaConfig(AppConfig):
+    name = 'zanhu.qa'
+    verbose_name = '问答'

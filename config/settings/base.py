@@ -83,9 +83,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "zanhu.users.apps.UsersConfig",
-    'zanhu.news.apps.NewsConfig',
-    'zanhu.articles.apps.ArticlesConfig',
+    "users.apps.UsersConfig",
+    'news.apps.NewsConfig',
+    'articles.apps.ArticlesConfig',
+    'qa.apps.QaConfig',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

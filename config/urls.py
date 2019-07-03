@@ -23,6 +23,7 @@ urlpatterns = [
                   # Your stuff: custom urls includes go here
                   path('news/', include('zanhu.news.urls', namespace='news')),
                   path('articles/', include('zanhu.articles.urls', namespace='articles')),
+                  path('qa/', include('zanhu.qa.urls', namespace='qa')),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

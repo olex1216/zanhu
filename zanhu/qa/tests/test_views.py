@@ -1,89 +1,216 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-# __author__ = '__Jack__'
-
-import tempfile
-
-from PIL import Image
-from test_plus.test import TestCase
-from django.urls import reverse
-from django.test import override_settings
-
-from zanhu.articles.models import Article
+# __author__ = '__Olex__'
 
 
-class ArticlesViewsTest(TestCase):
+import json
+from django.test import RequestFactory
+from test_plus.test import CBVTestCase
+from django.contrib.messages.storage.fallback import FallbackStorage
 
-    @staticmethod
-    def get_temp_img():
-        """什么临时图片文件并打开"""
-        size = (200, 200)
-        color = (255, 0, 0, 0)
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
-            image = Image.new("RGB", size, color)
-            image.save(f, "PNG")
-        return open(f.name, mode="rb")
+from zanhu.qa.models import Question, Answer
+from zanhu.qa import views
+
+
+class BaseQATest(CBVTestCase):
 
     def setUp(self):
-        """初始化操作"""
-        self.user = self.make_user()
-        self.client.login(username="testuser", password="password")
-        self.article = Article.objects.create(
-            title="第一篇文章",
-            content="程序员梦工厂",
-            status="P",
+        self.user = self.make_user("user01")
+        self.other_user = self.make_user("user02")
+        self.question_one = Question.objects.create(
             user=self.user,
+            title="问题1",
+            content="问题1的内容",
+            tags="测试1, 测试2"
         )
-        self.test_image = self.get_temp_img()
+        self.question_two = Question.objects.create(
+            user=self.user,
+            title="问题2",
+            content="问题2的内容",
+            has_answer=True,
+            tags="测试1, 测试2"
+        )
+        self.answer = Answer.objects.create(
+            user=self.user,
+            question=self.question_two,
+            content="问题2被采纳的回答",
+            is_answer=True
+        )
 
-    def tearDown(self):
-        """测试结束时关闭临时文件"""
-        self.test_image.close()
+        self.request = RequestFactory().get('/fake-url')
+        self.request.user = self.user
 
-    def test_index_articles(self):
-        """测试文章列表页"""
-        response = self.client.get(reverse("articles:list"))
+
+class TestQuestionListView(BaseQATest):
+    """测试问题列表"""
+
+    def test_context_data(self):
+        response = self.get(views.QuestionListView, request=self.request)
+
         self.assertEqual(response.status_code, 200)
 
-    def test_error_404(self):
-        """访问一篇不存在的文章"""
-        response_no_page = self.client.get(reverse("articles:article", kwargs={"slug": "no-slug"}))
-        self.assertEqual(response_no_page.status_code, 404)
+        self.assertQuerysetEqual(response.context_data['questions'],
+                                 map(repr, [self.question_one, self.question_two]), ordered=False)
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())  # 重写settings.py文件中MEDIA_ROOT
-    def test_create_article(self):
-        """测试文章创建成功后跳转"""
-        response = self.client.post(reverse("articles:write_new"),
-                                    {"title": "这是文章标题1",
-                                     "content": "这是文章内容1",
-                                     "tags": "测试",
-                                     "status": "P",
-                                     "image": self.test_image})
-        assert response.status_code == 302
+        self.assertTrue(all(a == b for a, b in zip(response.context_data['questions'], Question.objects.all())))
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
-    def test_single_article(self):
-        """测试多篇文章发表功能"""
-        current_count = Article.objects.count()
-        response = self.client.post(reverse("articles:write_new"),
-                                    {"title": "这是文章标题2",
-                                     "content": "这是文章内容2",
-                                     "tags": "测试",
-                                     "status": "P",
-                                     "image": self.test_image})
-        assert response.status_code == 302
-        assert Article.objects.count() == current_count + 1
+        self.assertContext('popular_tags', Question.objects.get_counted_tags())
+        self.assertContext('active', 'all')
 
-    @override_settings(MEDIA_ROOT=tempfile.gettempdir())
-    def test_draft_article(self):
-        """测试草稿箱功能"""
-        response = self.client.post(reverse("articles:write_new"),
-                                    {"title": "草稿文章",
-                                     "content": "草稿箱的文章",
-                                     "tags": "测试",
-                                     "status": "D",
-                                     "image": self.test_image})
-        resp = self.client.get(reverse("articles:drafts"))
-        assert resp.status_code == 200
+
+class TestAnsweredQuestionListView(BaseQATest):
+    """测试已回答问题列表"""
+
+    def test_context_data(self):
+        response = self.get(views.AnsweredQuestionListView, request=self.request)  # 方式一
+        # response = views.AnsweredQuestionListView.as_view()(self.request)  # 方式二
+
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(response.context_data['questions'], [repr(self.question_two)])
+        self.assertContext('active', 'answered')  # 对应方式一
+        # self.assertEqual(response.context_data['active'], 'answered')  # 对应方式二
+
+
+class TestUnansweredQuestionListView(BaseQATest):
+    """测试未回答问题列表"""
+
+    def test_context_data(self):
+        response = self.get(views.UnansweredQuestionListView, request=self.request)  # 方式一
+        self.assertEqual(response.status_code, 200)  # 或者 self.response_200(response)
+        self.assertQuerysetEqual(response.context_data['questions'], [repr(self.question_one)])
+        self.assertContext('active', 'unanswered')
+
+
+class TestCreateQuestionView(BaseQATest):
+    """测试创建问题"""
+
+    def test_get(self):
+        response = self.get(views.CreateQuestionView, request=self.request)
+        self.response_200(response)
+
+        self.assertContains(response, '标题')
+        self.assertContains(response, '编辑')
+        self.assertContains(response, '预览')
+        self.assertContains(response, '标签')
+        self.assertIsInstance(response.context_data['view'], views.CreateQuestionView)
+
+    def test_post(self):
+        data = {'title': 'title', 'content': 'content', 'tags': 'tag1,tag2', 'status': 'O'}
+        request = RequestFactory().post('/fake-url', data=data)
+        request.user = self.user
+        # RequestFactory测试含有django.contrib.messages的视图 https://code.djangoproject.com/ticket/17971
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
+        response = self.post(views.CreateQuestionView, request=request)
         assert response.status_code == 302
-        assert resp.context["articles"][0].slug == "cao-gao-wen-zhang"
+        assert response.url == '/qa/'
+
+
+class TestQuestionDetailView(BaseQATest):
+    """测试问题详情"""
+
+    def get_context_data(self):
+        response = self.get(views.QuestionDetailView, request=self.request,
+                            pk=self.question_one.id)
+        self.response_200(response)
+        self.assertEqual(response.context_data['question'], self.question_one)
+
+
+class TestCreateAnswerView(BaseQATest):
+    """测试创建回答"""
+
+    def test_get(self):
+        response = self.get(views.CreateAnswerView, request=self.request,
+                            question_id=self.question_one.id)
+        self.response_200(response)
+        self.assertContains(response, '编辑')
+        self.assertContains(response, '预览')
+        self.assertIsInstance(response.context_data['view'], views.CreateAnswerView)
+
+    def get_post(self):
+        request = RequestFactory().post('/fake-url', data={'content': 'content'})
+        request.user = self.user
+        # RequestFactory测试含有django.contrib.messages的视图 https://code.djangoproject.com/ticket/17971
+        setattr(request, 'session', 'session')
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
+
+        response = self.post(views.CreateAnswerView, request=request)
+        assert response.status_code == 302
+        assert response.url == f'/qa/question-detail/{self.question_one.id}'
+
+
+class TestQAVote(BaseQATest):
+
+    def setUp(self):
+        super(TestQAVote, self).setUp()
+        self.request = RequestFactory().post('/fake-url', HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        # QueryDict instance is immutable, request.POST是QueryDict对象，不可变
+        self.request.POST = self.request.POST.copy()
+
+        self.request.user = self.other_user
+
+    def test_question_upvote(self):
+        """赞同问题"""
+        self.request.POST['question'] = self.question_one.id
+        self.request.POST['value'] = 'U'
+
+        response = views.question_vote(self.request)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['votes'] == 1
+
+    def test_question_downvote(self):
+        """反对问题"""
+        self.request.POST['question'] = self.question_two.id
+        self.request.POST['value'] = 'D'
+
+        response = views.question_vote(self.request)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['votes'] == -1
+
+    def test_answer_upvote(self):
+        """赞同问答"""
+        self.request.POST['answer'] = self.answer.uuid_id
+        self.request.POST['value'] = 'U'
+
+        response = views.answer_vote(self.request)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['votes'] == 1
+
+    def test_answer_downvote(self):
+        """反对回答"""
+        self.request.POST['answer'] = self.answer.uuid_id
+        self.request.POST['value'] = 'D'
+
+        response = views.answer_vote(self.request)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['votes'] == -1
+
+    def test_accept_answer(self):
+        """接受回答"""
+
+        self.request.user = self.user  # self.user是提问者
+        self.request.POST['answer'] = self.answer.uuid_id
+
+        response = views.accept_answer(self.request)
+
+        assert response.status_code == 200
+        assert json.loads(response.content)['status'] == 'true'
+
+
+
+
+"""
+使用TestClient和RequestFactory测试视图的区别
+TestClient: 走Django框架的整个请求响应流程，经过WSGI handler、中间件、URL路由、
+上下文处理器，返回response，更像是集成测试。特点：使用简单，测试一步到位。
+测试用例运行慢，依赖于中间件、URL路由等其它部分
+
+RequestFactory: 生成WSGIRequest供使用，与Django代码无关，单元测试的最佳实践，但使用难度高
+"""

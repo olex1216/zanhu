@@ -6,14 +6,13 @@ from django import forms
 
 from markdownx.fields import MarkdownxFormField
 
-from zanhu.articles.models import Article
+from zanhu.qa.models import Question
 
 
-class ArticleForm(forms.ModelForm):
+class QuestionForm(forms.ModelForm):
     status = forms.CharField(widget=forms.HiddenInput())  # 隐藏
-    edited = forms.BooleanField(widget=forms.HiddenInput(), required=False, initial=False)  # 隐藏
     content = MarkdownxFormField()
 
     class Meta:
-        model = Article
-        fields = ["title", "content", "image", "tags", "status", "edited"]
+        model = Question
+        fields = ["title", "content", "tags", "status", ]
