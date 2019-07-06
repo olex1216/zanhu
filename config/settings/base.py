@@ -68,6 +68,7 @@ DJANGO_APPS = [
     'django.forms',  # 放在此列表的最后！用户后面重写django内置widget的模板
 ]
 THIRD_PARTY_APPS = [
+    'channels',
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -83,11 +84,13 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    # Your stuff: custom apps go here
     "users.apps.UsersConfig",
     'news.apps.NewsConfig',
     'articles.apps.ArticlesConfig',
     'qa.apps.QaConfig',
-    # Your stuff: custom apps go here
+    'messager.apps.MessagerConfig',
+
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -313,3 +316,17 @@ INSTALLED_APPS += ["compressor"]
 STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# ASGI server setup
+ASGI_APPLICATION = 'config.routing.application'
+
+
+# 频道层的缓存
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [f'{env("REDIS_URL", default="redis://127.0.0.1:6379")}/3', ],# channel layers缓存使用Redis 3
+        },
+    },
+}

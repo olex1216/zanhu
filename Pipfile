@@ -48,6 +48,10 @@ django-test-plus = "*"
 django-taggit = "*"
 django-markdownx = "*"
 django-contrib-comments = "*"
+channels = "==2.1.7"
+channels-redis = "*"
+asgi-redis = "*"
+asgiref = "==3.0.0"
 
 [requires]
 python_version = "3.7"
