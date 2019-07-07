@@ -90,6 +90,7 @@ LOCAL_APPS = [
     'articles.apps.ArticlesConfig',
     'qa.apps.QaConfig',
     'messager.apps.MessagerConfig',
+    'notifications.apps.NotificationsConfig',
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from zanhu.helpers import ajax_required
 from zanhu.qa.models import Question, Answer
 from zanhu.qa.forms import QuestionForm
-# from zanhu.notifications.views import notification_handler
+from zanhu.notifications.views import notification_handler
 
 
 class QuestionListView(LoginRequiredMixin, ListView):
@@ -175,5 +175,5 @@ def accept_answer(request):
         raise PermissionDenied
     answer.accept_answer()
     # 通知回答者
-    # notification_handler(request.user, answer.user, 'W', answer)
+    notification_handler(request.user, answer.user, 'W', answer)
     return JsonResponse({'status': 'true'}, status=200)

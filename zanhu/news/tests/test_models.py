@@ -8,6 +8,7 @@ from zanhu.news.models import News
 
 
 class NewsModelsTest(TestCase):
+
     def setUp(self):
         self.user = self.make_user("user01")
         self.other_user = self.make_user("user02")

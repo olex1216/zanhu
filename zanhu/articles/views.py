@@ -10,14 +10,14 @@ from django.urls import reverse
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 
-# from django_comments.signals import comment_was_posted
+from django_comments.signals import comment_was_posted
 
 from zanhu.articles.models import Article
 from zanhu.articles.forms import ArticleForm
 from zanhu.helpers import AuthorRequiredMixin
 
 
-# from zanhu.notifications.views import notification_handler
+from zanhu.notifications.views import notification_handler
 
 
 class ArticlesListView(LoginRequiredMixin, ListView):
@@ -87,12 +87,12 @@ class EditArticleView(LoginRequiredMixin, AuthorRequiredMixin, UpdateView):  # �
         # return reverse('articles:list')
         return reverse('articles:article', kwargs={'slug': self.get_object().slug})
 
-# def notify_comment(**kwargs):
-#     """文章有评论时通知作者"""
-#     actor = kwargs['request'].user
-#     obj = kwargs['comment'].content_object
-#
-#     notification_handler(actor, obj.user, 'C', obj)
+def notify_comment(**kwargs):
+    """文章有评论时通知作者"""
+    actor = kwargs['request'].user
+    obj = kwargs['comment'].content_object
+
+    notification_handler(actor, obj.user, 'C', obj)
 
 
-# comment_was_posted.connect(receiver=notify_comment)
+comment_was_posted.connect(receiver=notify_comment)
