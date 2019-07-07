@@ -19,6 +19,7 @@ urlpatterns = [
                   # User management
                   path("users/", include("zanhu.users.urls", namespace="users")),
                   path("accounts/", include("allauth.urls")),
+                  path('search/', include('haystack.urls')),
 
                   # Your stuff: custom urls includes go here
                   path('news/', include('zanhu.news.urls', namespace='news')),

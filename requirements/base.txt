@@ -25,6 +25,8 @@ django-redis==4.10.0  # https://github.com/niwinz/django-redis
 django-test-plus==1.2.1
 django-taggit== 1.1.0
 django-contrib-comments==1.9.1
+django-haystack==2.8.1
+elasticsearch=2.4.1
 
 
 # Django REST Framework

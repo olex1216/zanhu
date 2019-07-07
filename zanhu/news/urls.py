@@ -4,9 +4,6 @@
 # @File    : urls.py
 # @Software: PyCharm
 
-# !/usr/bin/python3
-# -*- coding:utf-8 -*-
-# __author__ = '__Olex__'
 from django.urls import path
 
 from zanhu.news import views

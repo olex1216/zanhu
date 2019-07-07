@@ -81,6 +81,7 @@ THIRD_PARTY_APPS = [
     'markdownx',
     'taggit',
     "django_comments",
+    "haystack",
 ]
 
 LOCAL_APPS = [
@@ -91,6 +92,7 @@ LOCAL_APPS = [
     'qa.apps.QaConfig',
     'messager.apps.MessagerConfig',
     'notifications.apps.NotificationsConfig',
+    'search.apps.SearchConfig',
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -238,6 +240,7 @@ EMAIL_PORT = env('DJANGO_EMAIL_PORT', default=465)
 EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL')
+
 # Celery
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ['zanhu.taskapp.celery.CeleryAppConfig']
@@ -331,3 +334,26 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # 使用的Elasticsearch搜索引擎
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        # Elasticsearch连接的地址
+        'URL': 'http://127.0.0.1:9200/',
+        # 默认的索引名
+        'INDEX_NAME': 'zanhu',
+    }
+}
+
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+#         'URL': 'http://127.0.0.1:9200/',
+#         'INDEX_NAME': 'zanhu',
+#     },
+# }
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20  # 分页
+# 实时信号量处理器，模型类中数据增加、更新、删除时自动更新索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
