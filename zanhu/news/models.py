@@ -79,7 +79,7 @@ class News(models.Model):
             parent=parent
         )
         # 通知楼主
-        # notification_handler(user, parent.user, 'R', parent, id_value=str(parent.uuid_id), key='social_update')
+        notification_handler(user, parent.user, 'R', parent, id_value=str(parent.uuid_id), key='social_update')
 
     def get_thread(self):
         """关联到当前记录的所有记录"""

@@ -24,12 +24,12 @@ from slugify import slugify
 class NotificationQuerySet(models.query.QuerySet):
 
     def unread(self):
-        # return self.filter(unread=True).select_related('actor', 'recipient')
-        return self.filter(unread=True)
+        return self.filter(unread=True).select_related('actor', 'recipient')
+        # return self.filter(unread=True)
 
     def read(self):
-        # return self.filter(unread=False).select_related('actor', 'recipient')
-        return self.filter(unread=False)
+        return self.filter(unread=False).select_related('actor', 'recipient')
+        # return self.filter(unread=False)
 
     def mark_all_as_read(self, recipient=None):
         """标为已读，可以传入接收者参数"""

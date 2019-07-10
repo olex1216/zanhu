@@ -1,4 +1,4 @@
-{% load static thumbnail compress %}<!DOCTYPE html>
+{% load static thumbnail compress cache%}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,7 @@
 
 </head>
 <body>
-{#{% cache 3600 sidebar request.user.username %}#}
+{% cache 3600 sidebar request.user.username %}
     <nav class="navbar fixed-top navbar-expand-sm bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">赞 乎&nbsp;&nbsp;</a>
@@ -86,7 +86,7 @@
             </div>
         </div>
     </nav>
-{#{% endcache %}#}
+{% endcache %}
 <div class="mb-3"></div>
 <div class="container">
     {% if messages %}

@@ -86,13 +86,13 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     # Your stuff: custom apps go here
-    "users.apps.UsersConfig",
-    'news.apps.NewsConfig',
-    'articles.apps.ArticlesConfig',
-    'qa.apps.QaConfig',
-    'messager.apps.MessagerConfig',
-    'notifications.apps.NotificationsConfig',
-    'search.apps.SearchConfig',
+    "zanhu.users.apps.UsersConfig",
+    'zanhu.news.apps.NewsConfig',
+    'zanhu.articles.apps.ArticlesConfig',
+    'zanhu.qa.apps.QaConfig',
+    'zanhu.messager.apps.MessagerConfig',
+    'zanhu.notifications.apps.NotificationsConfig',
+    'zanhu.search.apps.SearchConfig',
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -115,9 +115,11 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "account_logout"  # 登录后跳转
+LOGIN_REDIRECT_URL = "news:list"  # 登录后跳转
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -323,6 +325,10 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # ASGI server setup
 ASGI_APPLICATION = 'config.routing.application'
+
+# Markdown相关设置 https://neutronx.github.io/django-markdownx/customization/#settings
+MARKDOWNX_UPLOAD_MAX_SIZE = 5 * 1024 * 1024  # 允许上传的最大图片大小为5MB
+MARKDOWNX_IMAGE_MAX_SIZE = {'size': (1000, 1000), 'quality': 100}  # 图片最大为1000*1000, 不压缩
 
 
 # 频道层的缓存

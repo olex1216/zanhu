@@ -118,11 +118,11 @@ class Question(models.Model):
 
     def get_upvoters(self):
         """赞同的用户"""
-        return [vote.user for vote in self.votes.filter(value=True)]
+        return [vote.user for vote in self.votes.filter(value=True).select_related('user').prefecth_related('vote')]
 
     def get_downvoters(self):
         """反对的用户"""
-        return [vote.user for vote in self.votes.filter(value=False)]
+        return [vote.user for vote in self.votes.filter(value=False).select_related('user').prefecth_related('vote')]
 
 
 @python_2_unicode_compatible
@@ -155,11 +155,12 @@ class Answer(models.Model):
 
     def get_upvoters(self):
         """赞同的用户"""
-        return [vote.user for vote in self.votes.filter(value=True)]
+        return [vote.user for vote in self.votes.filter(value=True).select_related('user').prefecth_related('vote')]
 
     def get_downvoters(self):
         """反对的用户"""
-        return [vote.user for vote in self.votes.filter(value=False)]
+        return [vote.user for vote in self.votes.filter(value=False).select_related('user').prefecth_related('vote')]
+
 
     def accept_answer(self):
         """接受回答"""
