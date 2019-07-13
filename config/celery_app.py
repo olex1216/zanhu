@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+# __author__ = '__Olex__'
 import os
 from celery import Celery
 

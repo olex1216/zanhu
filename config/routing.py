@@ -3,8 +3,10 @@
 # @Author  : Olex
 # @File    : routing.py
 # @Software: PyCharm
-
-from django.urls import  path
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+# __author__ = '__Olex__'
+from django.urls import path
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter,URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator

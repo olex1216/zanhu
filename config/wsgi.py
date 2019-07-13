@@ -13,6 +13,9 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
+#!/usr/bin/python3
+# -*- coding:utf-8 -*-
+# __author__ = '__Olex__'
 import os
 import sys
 

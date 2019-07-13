@@ -1,10 +1,5 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
-# __author__ = '__Jack__'
-
-
-#!/usr/bin/python3
-# -*- coding:utf-8 -*-
 # __author__ = '__Olex__'
 
 from __future__ import unicode_literals
